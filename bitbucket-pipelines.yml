@@ -1,0 +1,7 @@
+image: otormaigh/android-pipelines:latest
+
+pipelines:
+  default:
+    - step:
+        script:
+          - ./gradlew assembleDebug
