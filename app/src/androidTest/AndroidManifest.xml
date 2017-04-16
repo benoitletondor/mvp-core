@@ -1,0 +1,10 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.benoitletondor.mvp.core">
+
+    <application
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name="com.benoitletondor.mvp.core.activity.MVPActivity" />
+        <activity android:name="com.benoitletondor.mvp.core.fragment.FragmentContainerActivity" />
+    </application>
+</manifest>
