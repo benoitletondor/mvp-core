@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.UiThreadTestRule;
+import android.support.test.runner.lifecycle.ActivityLifecycleCallback;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
@@ -232,18 +233,49 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
 
     public void finishCurrentActivity() {
         if (mActivity != null) {
-            mActivity.finish();
+            final Object lock = new Object();
 
-            mInstrumentation.waitForIdleSync();
-            try
+            final ActivityLifecycleCallback callback = new ActivityLifecycleCallback()
             {
-                Thread.sleep(500);
-            }
-            catch (InterruptedException ignored)
-            {}
+                @Override
+                public void onActivityLifecycleChanged(Activity activity, Stage stage)
+                {
+                    if( activity == mActivity && stage == Stage.DESTROYED )
+                    {
+                        mActivity = null;
+                        afterActivityFinished();
 
-            afterActivityFinished();
-            mActivity = null;
+                        ActivityLifecycleMonitorRegistry.getInstance().removeLifecycleCallback(this);
+
+                        synchronized (lock)
+                        {
+                            lock.notifyAll();
+                        }
+                    }
+                }
+            };
+            ActivityLifecycleMonitorRegistry.getInstance().addLifecycleCallback(callback);
+
+            mInstrumentation.runOnMainSync(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mActivity.finish();
+                }
+            });
+
+            synchronized (lock)
+            {
+                try
+                {
+                    lock.wait(10000);
+                }
+                catch (InterruptedException ignored)
+                {
+                    throw new RuntimeException("finishCurrentActivity timed out after 10s");
+                }
+            }
         }
     }
 
@@ -258,6 +290,10 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
     public void recreateCurrentActivity() {
         if( mActivity != null )
         {
+            final Instrumentation.ActivityMonitor monitor =
+                new Instrumentation.ActivityMonitor(mActivity.getClass().getName(), null, false);
+            mInstrumentation.addMonitor(monitor);
+
             mInstrumentation.runOnMainSync(new Runnable()
             {
                 @Override
@@ -266,21 +302,14 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
                     mActivity.recreate();
                 }
             });
-
-            mInstrumentation.waitForIdleSync();
-            try
-            {
-                Thread.sleep(500);
-            }
-            catch (InterruptedException ignored)
-            {}
-
             afterActivityFinished();
-            mActivity = null;
+            mInstrumentation.waitForIdleSync();
 
             beforeActivityLaunched();
-            mActivity = checkNotNull(getCurrentActivity(), "current activity shouldn't be null!");
+            mActivity = checkNotNull((T) monitor.waitForActivity(), "current activity shouldn't be null!");
             afterActivityLaunched();
+
+            mInstrumentation.removeMonitor(monitor);
         }
     }
 
@@ -297,6 +326,8 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
                     mInstrumentation.callActivityOnStop(mActivity);
                 }
             });
+
+            mInstrumentation.waitForIdleSync();
         }
     }
 
@@ -313,6 +344,8 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
                     mInstrumentation.callActivityOnResume(mActivity);
                 }
             });
+
+            mInstrumentation.waitForIdleSync();
         }
     }
 
