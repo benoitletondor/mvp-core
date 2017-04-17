@@ -1,8 +1,9 @@
-package com.benoitletondor.mvp.core.fragment;
+package com.benoitletondor.mvp.core.dialogfragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.benoitletondor.mvp.core.test.R;
@@ -10,30 +11,31 @@ import com.benoitletondor.mvp.core.test.R;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
 /**
- * An activity that is just a container for {@link MVPFragment}.
+ * An activity that is just a container for {@link MVPDialogFragment}.
  *
  * @author Benoit LETONDOR
  */
-public final class FragmentContainerActivity extends AppCompatActivity
+public final class DialogFragmentContainerActivity extends AppCompatActivity
 {
+    private final static String TAG = "dialogfragment";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_container);
 
-        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
         if( fragment == null )
         {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new MVPFragment())
-                .commitNow();
+            final MVPDialogFragment dialogFragment = new MVPDialogFragment();
+            dialogFragment.show(getSupportFragmentManager(), TAG);
         }
     }
 
-    public MVPFragment getFragment()
+    public MVPDialogFragment getFragment()
     {
-        return (MVPFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        return (MVPDialogFragment) getSupportFragmentManager().findFragmentByTag(TAG);
     }
 
     public void addInstanceToBackstack()
@@ -43,10 +45,11 @@ public final class FragmentContainerActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new MVPFragment())
-                    .addToBackStack(System.nanoTime()+"")
-                    .commit();
+                final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.addToBackStack(System.nanoTime()+"");
+
+                final MVPDialogFragment dialogFragment = new MVPDialogFragment();
+                dialogFragment.show(transaction, TAG);
 
                 getSupportFragmentManager().executePendingTransactions();
             }

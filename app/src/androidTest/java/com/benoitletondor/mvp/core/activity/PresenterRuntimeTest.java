@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 public class PresenterRuntimeTest
 {
     @Rule
-    public ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
+    public final ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
 
     @Test
     public void testPresenterRuntime()

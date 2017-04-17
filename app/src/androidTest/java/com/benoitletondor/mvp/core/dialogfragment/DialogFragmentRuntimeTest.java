@@ -1,4 +1,4 @@
-package com.benoitletondor.mvp.core.fragment;
+package com.benoitletondor.mvp.core.dialogfragment;
 
 import android.support.test.runner.AndroidJUnit4;
 
@@ -20,11 +20,11 @@ import static org.junit.Assert.assertTrue;
  * @author Benoit LETONDOR
  */
 @RunWith(AndroidJUnit4.class)
-public final class FragmentRuntimeTest
+public final class DialogFragmentRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<FragmentContainerActivity> mActivityRule
-        = new ActivityLifecycleTestRule<>(FragmentContainerActivity.class);
+    public final ActivityLifecycleTestRule<DialogFragmentContainerActivity> mActivityRule
+        = new ActivityLifecycleTestRule<>(DialogFragmentContainerActivity.class);
 
     @Test
     public void testPresenterAndViewAreBindAfterStartingActivity()
@@ -45,7 +45,7 @@ public final class FragmentRuntimeTest
     @Test
     public void testPresenterIsReleasedAfterFinishingTheActivity() throws Exception
     {
-        final MVPFragment fragment = mActivityRule.getActivity().getFragment();
+        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
         mActivityRule.finishCurrentActivity();
 
         assertNull(fragment.getPresenter());
@@ -54,8 +54,8 @@ public final class FragmentRuntimeTest
     @Test
     public void testPresenterIsKeptOnRotation() throws Exception
     {
-        final MVPFragment fragment = mActivityRule.getActivity().getFragment();
-        final SpyPresenter<MVPFragment> presenter = fragment.getPresenter();
+        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
 
         mActivityRule.recreateCurrentActivity();
 
@@ -68,14 +68,14 @@ public final class FragmentRuntimeTest
     @Test
     public void testViewIsReleasedWhenInBackstack()
     {
-        final MVPFragment fragment = mActivityRule.getActivity().getFragment();
-        final SpyPresenter<MVPFragment> presenter = fragment.getPresenter();
+        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
         assertNotNull(presenter);
 
         mActivityRule.getActivity().addInstanceToBackstack();
         assertTrue(mActivityRule.getActivity().getFragment() != fragment);
 
-        assertNull(presenter.getView());
+        assertNotNull(presenter.getView()); // View isn't released when in backstack (onStop not called)
 
         assertNotNull(mActivityRule.getActivity().getFragment().getPresenter());
         assertTrue(mActivityRule.getActivity().getFragment().getPresenter() != presenter);
@@ -85,8 +85,8 @@ public final class FragmentRuntimeTest
     @Test
     public void testPresenterIsKeptWhenPoppingBackstack()
     {
-        final MVPFragment fragment = mActivityRule.getActivity().getFragment();
-        final SpyPresenter<MVPFragment> presenter = fragment.getPresenter();
+        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
         assertNotNull(presenter);
 
         mActivityRule.getActivity().addInstanceToBackstack();

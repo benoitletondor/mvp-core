@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public final class ActivityRuntimeTest
 {
     @Rule
-    public ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
+    public final ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
 
     @Test
     public void testPresenterAndViewAreBindAfterStartingActivity()
@@ -33,8 +33,7 @@ public final class ActivityRuntimeTest
     @Test
     public void testViewIsReleasedAfterStoppingTheActivity()
     {
-        getInstrumentation().callActivityOnPause(mActivityRule.getActivity());
-        getInstrumentation().callActivityOnStop(mActivityRule.getActivity());
+        mActivityRule.simulateActivityStop();
 
         assertNotNull(mActivityRule.getActivity().getPresenter());
         assertNull(mActivityRule.getActivity().getPresenter().getView());

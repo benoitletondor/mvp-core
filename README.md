@@ -10,4 +10,4 @@ This library is being finished, tests will be added and documentation will be wr
 
 ### License
 
-Sources are availables under the Apache 2 licence (See LICENSE for details).
+Sources are available under the Apache 2 licence (See LICENSE for details).

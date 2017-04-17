@@ -1,4 +1,4 @@
-package com.benoitletondor.mvp.core.fragment;
+package com.benoitletondor.mvp.core.dialogfragment;
 
 import android.support.test.runner.AndroidJUnit4;
 
@@ -21,13 +21,13 @@ import static org.junit.Assert.assertNotNull;
 public class PresenterRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<FragmentContainerActivity> mActivityRule
-        = new ActivityLifecycleTestRule<>(FragmentContainerActivity.class);
+    public final ActivityLifecycleTestRule<DialogFragmentContainerActivity> mActivityRule
+        = new ActivityLifecycleTestRule<>(DialogFragmentContainerActivity.class);
 
     @Test
     public void testPresenterRuntime()
     {
-        final SpyPresenter<MVPFragment> presenter = mActivityRule.getActivity().getFragment().getPresenter();
+        final SpyPresenter<MVPDialogFragment> presenter = mActivityRule.getActivity().getFragment().getPresenter();
         assertNotNull(presenter);
 
         // Test first launch
@@ -53,38 +53,38 @@ public class PresenterRuntimeTest
         assertEquals(1, presenter.mOnViewDetachedCounter);
         assertEquals(0, presenter.mOnFinishCounter);
 
-        // Test added to backstack
+        // Test added to backstack (doesn't trigger onStop)
         mActivityRule.getActivity().addInstanceToBackstack();
         assertEquals(2, presenter.mOnStartCounter);
         assertEquals(2, presenter.mViewAttachedCounter);
-        assertEquals(2, presenter.mOnStopCounter);
-        assertEquals(2, presenter.mOnViewDetachedCounter);
+        assertEquals(1, presenter.mOnStopCounter);
+        assertEquals(1, presenter.mOnViewDetachedCounter);
         assertEquals(0, presenter.mOnFinishCounter);
 
-        // Test back from backstack
+        // Test back from backstack (doesn't trigger onStart)
         mActivityRule.getActivity().popBackStack();
-        assertEquals(3, presenter.mOnStartCounter);
-        assertEquals(3, presenter.mViewAttachedCounter);
-        assertEquals(2, presenter.mOnStopCounter);
-        assertEquals(2, presenter.mOnViewDetachedCounter);
+        assertEquals(2, presenter.mOnStartCounter);
+        assertEquals(2, presenter.mViewAttachedCounter);
+        assertEquals(1, presenter.mOnStopCounter);
+        assertEquals(1, presenter.mOnViewDetachedCounter);
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test recreate
         mActivityRule.recreateCurrentActivity();
         assertEquals(presenter, mActivityRule.getActivity().getFragment().getPresenter());
 
-        assertEquals(4, presenter.mOnStartCounter);
-        assertEquals(4, presenter.mViewAttachedCounter);
-        assertEquals(3, presenter.mOnStopCounter);
-        assertEquals(3, presenter.mOnViewDetachedCounter);
+        assertEquals(3, presenter.mOnStartCounter);
+        assertEquals(3, presenter.mViewAttachedCounter);
+        assertEquals(2, presenter.mOnStopCounter);
+        assertEquals(2, presenter.mOnViewDetachedCounter);
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test finish
         mActivityRule.finishCurrentActivity();
-        assertEquals(4, presenter.mOnStartCounter);
-        assertEquals(4, presenter.mViewAttachedCounter);
-        assertEquals(4, presenter.mOnStopCounter);
-        assertEquals(4, presenter.mOnViewDetachedCounter);
+        assertEquals(3, presenter.mOnStartCounter);
+        assertEquals(3, presenter.mViewAttachedCounter);
+        assertEquals(3, presenter.mOnStopCounter);
+        assertEquals(3, presenter.mOnViewDetachedCounter);
         assertEquals(1, presenter.mOnFinishCounter);
     }
 

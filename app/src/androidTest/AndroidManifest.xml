@@ -6,5 +6,6 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name="com.benoitletondor.mvp.core.activity.MVPActivity" />
         <activity android:name="com.benoitletondor.mvp.core.fragment.FragmentContainerActivity" />
+        <activity android:name="com.benoitletondor.mvp.core.dialogfragment.DialogFragmentContainerActivity" />
     </application>
 </manifest>

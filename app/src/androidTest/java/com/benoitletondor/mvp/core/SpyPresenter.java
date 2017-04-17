@@ -68,13 +68,4 @@ public final class SpyPresenter<V extends View> extends BasePresenterImpl<V>
     {
         return mView;
     }
-
-    public void resetCounters()
-    {
-        mViewAttachedCounter = 0;
-        mOnStartCounter = 0;
-        mOnStopCounter = 0;
-        mOnViewDetachedCounter = 0;
-        mOnFinishCounter = 0;
-    }
 }

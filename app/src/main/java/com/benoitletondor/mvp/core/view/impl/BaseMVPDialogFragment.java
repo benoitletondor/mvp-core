@@ -47,12 +47,6 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         super.onCreate(savedInstanceState);
 
         mFirstStart = true;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }

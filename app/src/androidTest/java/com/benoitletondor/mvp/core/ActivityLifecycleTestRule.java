@@ -32,6 +32,7 @@ import static android.support.test.espresso.core.deps.guava.base.Preconditions.c
  *
  * @author Benoit LETONDOR
  */
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "EmptyMethod", "unused", "ConstantConditions"})
 public final class ActivityLifecycleTestRule<T extends Activity> extends UiThreadTestRule
 {
     private static final String TAG = "ActivityTestRule";
@@ -306,6 +307,7 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
             mInstrumentation.waitForIdleSync();
 
             beforeActivityLaunched();
+            //noinspection unchecked
             mActivity = checkNotNull((T) monitor.waitForActivity(), "current activity shouldn't be null!");
             afterActivityLaunched();
 
@@ -361,6 +363,7 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
             }
         });
 
+        //noinspection unchecked
         return (T) activities[0];
     }
 
