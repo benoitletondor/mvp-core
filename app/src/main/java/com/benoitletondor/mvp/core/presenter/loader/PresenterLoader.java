@@ -12,7 +12,7 @@ import com.benoitletondor.mvp.core.presenter.Presenter;
  *
  * @author Benoit LETONDOR
  */
-public final class PresenterLoader<P extends Presenter> extends Loader<P>
+public class PresenterLoader<P extends Presenter> extends Loader<P>
 {
     /**
      * The presenter, will be null if not created yet

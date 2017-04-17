@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -37,7 +38,8 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
      * Do we need to call {@link #doStart()} from the {@link #onLoadFinished(Loader, P)} method.
      * Will be true if presenter wasn't loaded when {@link #onStart()} is reached
      */
-    private final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
+    @VisibleForTesting
+    final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
 
 // ------------------------------------------->
 
@@ -89,9 +91,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     {
         if( mPresenter != null )
         {
-            mPresenter.onStop();
-
-            mPresenter.onViewDetached();
+            doStop();
         }
 
         super.onStop();
@@ -115,7 +115,8 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
      * Call the presenter callbacks for onStart
      */
     @SuppressWarnings("unchecked")
-    private void doStart()
+    @VisibleForTesting
+    void doStart()
     {
         assert mPresenter != null;
 
@@ -124,6 +125,19 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         mPresenter.onStart(mFirstStart);
 
         mFirstStart = false;
+    }
+
+    /**
+     * Call the presenter callbacks for onStop
+     */
+    @VisibleForTesting
+    void doStop()
+    {
+        assert mPresenter != null;
+
+        mPresenter.onStop();
+
+        mPresenter.onViewDetached();
     }
 
     @Override

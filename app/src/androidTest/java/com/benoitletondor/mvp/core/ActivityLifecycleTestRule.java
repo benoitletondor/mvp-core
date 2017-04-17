@@ -351,22 +351,6 @@ public final class ActivityLifecycleTestRule<T extends Activity> extends UiThrea
         }
     }
 
-    private T getCurrentActivity()
-    {
-        final Activity[] activities = new Activity[1];
-        mInstrumentation.runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                activities[0] = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).iterator().next();
-            }
-        });
-
-        //noinspection unchecked
-        return (T) activities[0];
-    }
-
     /**
      * <a href="http://junit.org/apidocs/org/junit/runners/model/Statement.html">
      * <code>Statement</code></a> that finishes the activity after the test was executed

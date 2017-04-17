@@ -2,6 +2,7 @@ package com.benoitletondor.mvp.core.view.impl;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +34,8 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
      * Do we need to call {@link #doStart()} from the {@link #onLoadFinished(Loader, P)} method.
      * Will be true if presenter wasn't loaded when {@link #onStart()} is reached
      */
-    private final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
+    @VisibleForTesting
+    final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
 
 // ------------------------------------------->
 
@@ -67,9 +69,7 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
     {
         if( mPresenter != null )
         {
-            mPresenter.onStop();
-
-            mPresenter.onViewDetached();
+            doStop();
         }
 
         super.onStop();
@@ -81,7 +81,8 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
      * Call the presenter callbacks for onStart
      */
     @SuppressWarnings("unchecked")
-    private void doStart()
+    @VisibleForTesting
+    void doStart()
     {
         assert mPresenter != null;
 
@@ -90,6 +91,19 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
         mPresenter.onStart(mFirstStart);
 
         mFirstStart = false;
+    }
+
+    /**
+     * Call the presenter callbacks for onStop
+     */
+    @VisibleForTesting
+    void doStop()
+    {
+        assert mPresenter != null;
+
+        mPresenter.onStop();
+
+        mPresenter.onViewDetached();
     }
 
     @Override
