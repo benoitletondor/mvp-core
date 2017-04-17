@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tests in 'com.benoitletondor.mvp.core'" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" nameIsGenerated="true">
-    <module name="app" />
+    <module name="mvpcore" />
     <option name="TESTING_TYPE" value="1" />
     <option name="INSTRUMENTATION_RUNNER_CLASS" value="android.support.test.runner.AndroidJUnitRunner" />
     <option name="METHOD_NAME" value="" />

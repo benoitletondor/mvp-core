@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="UnitTests in 'com.benoit.mvp.core'" type="AndroidJUnit" factoryName="Android JUnit">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="app" />
+    <module name="mvpcore" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PACKAGE_NAME" />
@@ -17,7 +17,7 @@
       <value defaultName="singleModule" />
     </option>
     <envs />
-    <dir value="$PROJECT_DIR$/app/src/test/java/com/benoitletondor/mvp/core" />
+    <dir value="$PROJECT_DIR$/mvpcore/src/test/java/com/benoitletondor/mvp/core" />
     <patterns />
     <method />
   </configuration>
