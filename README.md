@@ -1,5 +1,7 @@
 # MVP Core
 
+[![Build Status](https://travis-ci.org/benoitletondor/mvp-core.svg?branch=develop)](https://travis-ci.org/benoitletondor/mvp-core)
+
 MVP Core is an Android library that contains base classes for implementing MVP into your application.
 
 ### WIP
