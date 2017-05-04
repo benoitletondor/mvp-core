@@ -33,5 +33,6 @@ before_script:
   - adb shell input keyevent 82 &    
 
 script:
-    - ./gradlew connectedAndroidTest
-    - ./gradlew test
+    - ./gradlew mvpcore:connectedAndroidTest
+    - ./gradlew mvpcore:test
+    - ./gradlew sample:assembleDebug

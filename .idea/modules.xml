@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/mvp-core.iml" filepath="$PROJECT_DIR$/mvp-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/mvpcore/mvpcore.iml" filepath="$PROJECT_DIR$/mvpcore/mvpcore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>
 </project>

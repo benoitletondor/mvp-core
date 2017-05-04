@@ -42,12 +42,22 @@ public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView>
 	}
 	
 	@Override
-	public void onStart()
+	protected void onCreate(Bundle savedInstanceState) {
 	{
-		super.onStart();
-		assert mPresenter != null;
+		onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 		
-		// Presenter is accessible starting from this method until the activity gets destroyed
+		// You can bind UI events to the presenter (but beware, presenter is still null at this point)
+		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() 
+		{
+			public void onClick(View v) 
+			{
+				if( mPresenter != null )
+				{
+					mPresenter.onButtonClicked();
+				} 
+			}
+		});
 	}
 }
 ```
@@ -90,6 +100,24 @@ public class MainViewPresenterImpl extends BasePresenterImpl<MainView> implement
 
 ##### Again, if you're not sure about anything here, a good idea would be to check the [README of the MVP Template that explains everything in details](https://github.com/benoitletondor/Android-Studio-MVP-template).
 
+## Sample code
+
+A sample application is provided (see _sample_ subfolder) implementing the MVP core library into an application. 
+
+The sample provides implementation details for `Activity`, `Fragment` and `DialogFragment`. It also shows how to use Dagger 2 to inject the `Presenter` into a view.
+
 ## License
 
-Sources are available under the Apache 2 licence (See LICENSE for details).
+    Copyright 2017 Benoit LETONDOR
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
