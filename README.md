@@ -104,7 +104,13 @@ public class MainViewPresenterImpl extends BasePresenterImpl<MainView> implement
 
 A sample application is provided (see _sample_ subfolder) implementing the MVP core library into an application. 
 
-The sample provides implementation details for `Activity`, `Fragment` and `DialogFragment`. It also shows how to use Dagger 2 to inject the `Presenter` into a view.
+You'll find:
+
+- A sample MVP `Activity`: the _main_ scene
+- A sample MVP `Fragment` with its containing Activity: the _fragment_ scene
+- A sample MVP `DialogFragment`: the `dialog` scene
+
+This sample app also shows how to use [Dagger 2](https://github.com/google/dagger) to inject your presenters into views.
 
 ## License
 

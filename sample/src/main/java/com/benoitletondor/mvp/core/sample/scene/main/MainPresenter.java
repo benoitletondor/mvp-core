@@ -9,5 +9,23 @@ import com.benoitletondor.mvp.core.presenter.Presenter;
  */
 public interface MainPresenter extends Presenter<MainView>
 {
+    /**
+     * Called when the user clicks on the minus button
+     */
+    void onMinusButtonClick();
 
+    /**
+     * Called when the user clicks on the plus button
+     */
+    void onPlusButtonClick();
+
+    /**
+     * Called when the user clicks on the start fragment activity button
+     */
+    void onStartFragmentActivityButtonClicked();
+
+    /**
+     * Called when the user clicks on the show dialog fragment button
+     */
+    void onShowDialogFragmentButtonClicked();
 }

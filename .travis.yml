@@ -35,4 +35,4 @@ before_script:
 script:
     - ./gradlew mvpcore:connectedAndroidTest
     - ./gradlew mvpcore:test
-    - ./gradlew sample:assembleDebug
+    - ./gradlew sample:assembleRelease

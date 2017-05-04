@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MVP Core Sample</string>
+
+    <string name="activity_main_description">This is a sample of how to implement MVP Core into your application.</string>
+    <string name="activity_main_counter">Counter: %d</string>
+    <string name="activity_main_start_fragment_activity">Start Fragment Activity</string>
+    <string name="activity_main_show_dialog_fragment">Show Dialog Fragment</string>
+
+    <string name="activity_fragment_name">Fragment</string>
+
+    <string name="fragment_dialog_description">I\'m a Dialog Fragment</string>
+    <string name="fragment_dialog_close">Close</string>
 </resources>

@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.benoitletondor.mvp.core.sample.scene.main.impl.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_main_description"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/activity_main_counter_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/activity_main_minus_button"
+                android:layout_width="0dip"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <Button
+                android:id="@+id/activity_main_plus_button"
+                android:layout_width="0dip"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/activity_main_start_fragment_activity_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_main_start_fragment_activity"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/activity_main_start_dialog_fragment_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_main_show_dialog_fragment"/>
+
+    </LinearLayout>
+
+</ScrollView>

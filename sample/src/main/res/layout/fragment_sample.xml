@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context="com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.impl.SampleFragment">
+
+    <TextView
+        android:id="@+id/fragment_sample_fizzbuzz_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/fragment_sample_plus_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+"/>
+
+</LinearLayout>
