@@ -9,7 +9,7 @@ import dagger.android.support.DaggerApplication;
 /**
  * Base application class
  *
- * @author
+ * @author Benoit LETONDOR
  */
 public class App extends DaggerApplication
 {
