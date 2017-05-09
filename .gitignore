@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+.idea/kotlinc.xml
+.idea/vcs.xml
