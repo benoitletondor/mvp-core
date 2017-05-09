@@ -24,6 +24,12 @@ This library provides implementation for views that use the [appcompat-v7 suppor
 
 ## How to use
 
+**Add this line to your gradle file:**
+
+```
+compile 'com.benoitletondor:mvp-core:1.0'
+```
+
 To use it, every `Presenter` of your app should extends `BasePresenterImpl` and every view should extend either `BaseMVPActivity`, `BaseMVPFragment` or `BaseMVPDialogFragment`.
 
 Every view should provide a `PresenterFactory` that will be called by the `Loader` to get a new instance of the presenter when needed.
