@@ -38,6 +38,27 @@ archivesBaseName = "mvp-core"
 group = "com.benoitletondor"
 version = project.android.defaultConfig.versionName
 
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator)) + configurations.compile
+}
+
+afterEvaluate {
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompile.classpath.files
+    })
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -67,4 +88,9 @@ bintray {
             vcsTag = project.android.defaultConfig.versionName
         }
     }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }
