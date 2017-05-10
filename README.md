@@ -1,6 +1,6 @@
 # MVP Core
 
-[![Build Status](https://travis-ci.org/benoitletondor/mvp-core.svg?branch=master)](https://travis-ci.org/benoitletondor/mvp-core) [![Build Status](https://travis-ci.org/benoitletondor/mvp-core.svg?branch=develop)](https://travis-ci.org/benoitletondor/mvp-core) [ ![Download](https://api.bintray.com/packages/benoitletondor/maven/mvp-core/images/download.svg) ](https://bintray.com/benoitletondor/maven/mvp-core/_latestVersion)
+[![Build Status](https://travis-ci.org/benoitletondor/mvp-core.svg?branch=master)](https://travis-ci.org/benoitletondor/mvp-core) [ ![Download](https://api.bintray.com/packages/benoitletondor/maven/mvp-core/images/download.svg) ](https://bintray.com/benoitletondor/maven/mvp-core/_latestVersion)
 
 MVP Core is an Android library that contains base classes for implementing MVP into your application.
 
