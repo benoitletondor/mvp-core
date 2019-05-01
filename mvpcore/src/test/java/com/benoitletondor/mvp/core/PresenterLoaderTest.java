@@ -17,7 +17,7 @@
 package com.benoitletondor.mvp.core;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.presenter.impl.BasePresenterImpl;

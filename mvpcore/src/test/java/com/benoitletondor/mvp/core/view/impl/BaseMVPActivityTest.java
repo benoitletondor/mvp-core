@@ -17,7 +17,7 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;

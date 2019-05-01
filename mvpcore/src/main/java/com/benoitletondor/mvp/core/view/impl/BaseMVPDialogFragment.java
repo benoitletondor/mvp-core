@@ -19,12 +19,13 @@ package com.benoitletondor.mvp.core.view.impl;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.DialogFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import android.util.Log;
 import android.view.View;
 
@@ -43,7 +44,6 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     /**
      * The presenter for this view
      */
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     protected P mPresenter;
     /**
@@ -66,11 +66,11 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
 
         mFirstStart = true;
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         mFirstStart = true;
 
@@ -114,12 +114,20 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     }
 
     @Override
+    public void onDestroy()
+    {
+        mPresenter = null;
+
+        super.onDestroy();
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog)
     {
         // Force destroy manually cause it's not called by the framework, not sure why yet
         if( getActivity() != null ) // If get activity == null, it's just a rotation
         {
-            getLoaderManager().destroyLoader(LOADER_ID);
+            LoaderManager.getInstance(this).destroyLoader(LOADER_ID);
         }
 
         super.onDismiss(dialog);
@@ -163,7 +171,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     }
 
     @Override
-    public final void onLoadFinished(Loader<P> loader, P presenter)
+    public final void onLoadFinished(@NonNull Loader<P> loader, P presenter)
     {
         mPresenter = presenter;
 
@@ -175,7 +183,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     }
 
     @Override
-    public final void onLoaderReset(Loader<P> loader)
+    public final void onLoaderReset(@NonNull Loader<P> loader)
     {
         mPresenter = null;
     }

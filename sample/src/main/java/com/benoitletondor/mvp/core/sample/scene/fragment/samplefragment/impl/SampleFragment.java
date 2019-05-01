@@ -2,8 +2,8 @@ package com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,17 +45,17 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         return inflater.inflate(R.layout.fragment_sample, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
-        mFizzBuzzTextView = (TextView) view.findViewById(R.id.fragment_sample_fizzbuzz_textview);
+        mFizzBuzzTextView = view.findViewById(R.id.fragment_sample_fizzbuzz_textview);
 
         view.findViewById(R.id.fragment_sample_plus_button).setOnClickListener(new View.OnClickListener()
         {

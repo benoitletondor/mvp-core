@@ -1,6 +1,6 @@
 package com.benoitletondor.mvp.core.sample.scene.fragment.base.injection;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.FragmentPresenter;

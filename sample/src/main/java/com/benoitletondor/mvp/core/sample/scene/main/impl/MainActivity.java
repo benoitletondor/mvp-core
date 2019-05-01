@@ -37,7 +37,7 @@ public final class MainActivity extends BaseMVPActivity<MainPresenter, MainView>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCounterTextView = (TextView) findViewById(R.id.activity_main_counter_textview);
+        mCounterTextView = findViewById(R.id.activity_main_counter_textview);
 
         findViewById(R.id.activity_main_minus_button).setOnClickListener(new View.OnClickListener()
         {

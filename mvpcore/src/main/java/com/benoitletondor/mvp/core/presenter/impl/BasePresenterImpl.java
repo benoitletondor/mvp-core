@@ -16,8 +16,8 @@
 
 package com.benoitletondor.mvp.core.presenter.impl;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.view.View;
@@ -34,7 +34,6 @@ public abstract class BasePresenterImpl<V extends View> implements Presenter<V>
     /**
      * The view, will be null if the presenter isn't attached to a view
      */
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     protected V mView;
 

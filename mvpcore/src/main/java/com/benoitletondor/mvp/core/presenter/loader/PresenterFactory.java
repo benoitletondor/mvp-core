@@ -16,7 +16,7 @@
 
 package com.benoitletondor.mvp.core.presenter.loader;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 

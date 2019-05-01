@@ -16,7 +16,7 @@
 
 package com.benoitletondor.mvp.core;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.benoitletondor.mvp.core.presenter.impl.BasePresenterImpl;
 import com.benoitletondor.mvp.core.view.View;

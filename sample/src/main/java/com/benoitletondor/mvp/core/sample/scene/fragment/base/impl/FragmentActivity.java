@@ -50,11 +50,10 @@ public final class FragmentActivity extends BaseMVPActivity<FragmentPresenter, F
     {
         int id = item.getItemId();
 
-        switch (id)
+        if ( id == android.R.id.home )
         {
-            case android.R.id.home:
-                finish();
-                return true;
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

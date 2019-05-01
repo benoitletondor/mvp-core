@@ -2,7 +2,9 @@ package com.benoitletondor.mvp.core.sample.scene.dialog.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,7 @@ public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 

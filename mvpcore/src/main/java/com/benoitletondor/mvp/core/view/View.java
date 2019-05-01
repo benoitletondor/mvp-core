@@ -16,7 +16,7 @@
 
 package com.benoitletondor.mvp.core.view;
 
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 /**
  * A view is in charge of displaying the content to the user. The view is called by the presenter

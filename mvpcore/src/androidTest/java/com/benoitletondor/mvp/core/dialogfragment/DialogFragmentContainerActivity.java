@@ -17,14 +17,13 @@
 package com.benoitletondor.mvp.core.dialogfragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.benoitletondor.mvp.core.test.R;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
 /**
  * An activity that is just a container for {@link MVPDialogFragment}.
@@ -56,7 +55,7 @@ public final class DialogFragmentContainerActivity extends AppCompatActivity
 
     public void addInstanceToBackstack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable()
         {
             @Override
             public void run()
@@ -74,7 +73,7 @@ public final class DialogFragmentContainerActivity extends AppCompatActivity
 
     public void popBackStack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable()
         {
             @Override
             public void run()

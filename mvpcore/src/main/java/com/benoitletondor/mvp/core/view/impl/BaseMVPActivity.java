@@ -17,11 +17,13 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
@@ -39,7 +41,6 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
     /**
      * The presenter for this view
      */
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     protected P mPresenter;
     /**
@@ -61,7 +62,7 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
         super.onCreate(savedInstanceState);
 
         mFirstStart = true;
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -89,6 +90,14 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
         }
 
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        mPresenter = null;
+
+        super.onDestroy();
     }
 
 // ------------------------------------------->
@@ -129,7 +138,7 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
     }
 
     @Override
-    public final void onLoadFinished(Loader<P> loader, P presenter)
+    public final void onLoadFinished(@NonNull Loader<P> loader, P presenter)
     {
         mPresenter = presenter;
 
@@ -141,7 +150,7 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
     }
 
     @Override
-    public final void onLoaderReset(Loader<P> loader)
+    public final void onLoaderReset(@NonNull Loader<P> loader)
     {
         mPresenter = null;
     }

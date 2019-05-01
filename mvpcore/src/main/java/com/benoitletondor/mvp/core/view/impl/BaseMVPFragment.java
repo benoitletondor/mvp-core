@@ -17,11 +17,13 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import android.util.Log;
 import android.view.View;
 
@@ -40,7 +42,6 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     /**
      * The presenter for this view
      */
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     protected P mPresenter;
     /**
@@ -69,11 +70,11 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         // When used in backstack, the fragment will not be destroyed, only its view.
         mFirstStart = true;
@@ -108,7 +109,15 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
         super.onStop();
     }
 
-// ------------------------------------------->
+    @Override
+    public void onDestroy()
+    {
+        mPresenter = null;
+
+        super.onDestroy();
+    }
+
+    // ------------------------------------------->
 
     /**
      * Call the presenter callbacks for onStart
@@ -146,7 +155,7 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     }
 
     @Override
-    public final void onLoadFinished(Loader<P> loader, P presenter)
+    public final void onLoadFinished(@NonNull Loader<P> loader, P presenter)
     {
         mPresenter = presenter;
 
@@ -158,7 +167,7 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     }
 
     @Override
-    public final void onLoaderReset(Loader<P> loader)
+    public final void onLoaderReset(@NonNull Loader<P> loader)
     {
         mPresenter = null;
     }
