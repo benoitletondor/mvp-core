@@ -54,15 +54,10 @@ public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter,
     {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.fragment_dialog_close_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        view.findViewById(R.id.fragment_dialog_close_button).setOnClickListener(view1 -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onCloseButtonClicked();
-                }
+                mPresenter.onCloseButtonClicked();
             }
         });
     }

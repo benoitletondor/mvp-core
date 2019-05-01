@@ -90,7 +90,6 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
         if( mPresenter == null )
         {
             mNeedToCallStart.set(true);
-            Log.d(TAG, "Start postponed, presenter not ready");
         }
         else
         {
@@ -117,7 +116,7 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
         super.onDestroy();
     }
 
-    // ------------------------------------------->
+// ------------------------------------------->
 
     /**
      * Call the presenter callbacks for onStart

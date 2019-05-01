@@ -16,7 +16,6 @@
 
 package com.benoitletondor.mvp.core.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
@@ -35,15 +34,7 @@ public class MVPActivity extends BaseMVPActivity<SpyPresenter<MVPActivity>, MVPA
     @Override
     protected PresenterFactory<SpyPresenter<MVPActivity>> getPresenterFactory()
     {
-        return new PresenterFactory<SpyPresenter<MVPActivity>>()
-        {
-            @NonNull
-            @Override
-            public SpyPresenter<MVPActivity> create()
-            {
-                return new SpyPresenter<>();
-            }
-        };
+        return SpyPresenter::new;
     }
 
     @Nullable

@@ -57,15 +57,10 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
 
         mFizzBuzzTextView = view.findViewById(R.id.fragment_sample_fizzbuzz_textview);
 
-        view.findViewById(R.id.fragment_sample_plus_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        view.findViewById(R.id.fragment_sample_plus_button).setOnClickListener(view1 -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onPlusButtonClicked();
-                }
+                mPresenter.onPlusButtonClicked();
             }
         });
     }

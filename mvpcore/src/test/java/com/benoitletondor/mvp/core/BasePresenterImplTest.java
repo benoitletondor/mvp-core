@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 public final class BasePresenterImplTest
 {
     @Test
-    public void testViewIsNotNullAfterAttached() throws Exception
+    public void testViewIsNotNullAfterAttached()
     {
         final PresenterTest presenter = new PresenterTest();
         final View view = Mockito.mock(View.class);
@@ -52,7 +52,7 @@ public final class BasePresenterImplTest
     }
 
     @Test
-    public void testViewIsNullAfterDetached() throws Exception
+    public void testViewIsNullAfterDetached()
     {
         final PresenterTest presenter = new PresenterTest();
         final View view = Mockito.mock(View.class);

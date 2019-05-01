@@ -2,7 +2,6 @@ package com.benoitletondor.mvp.core.sample.scene.main.impl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
@@ -39,51 +38,31 @@ public final class MainActivity extends BaseMVPActivity<MainPresenter, MainView>
 
         mCounterTextView = findViewById(R.id.activity_main_counter_textview);
 
-        findViewById(R.id.activity_main_minus_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        findViewById(R.id.activity_main_minus_button).setOnClickListener(view -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onMinusButtonClick();
-                }
+                mPresenter.onMinusButtonClick();
             }
         });
 
-        findViewById(R.id.activity_main_plus_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        findViewById(R.id.activity_main_plus_button).setOnClickListener(view -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onPlusButtonClick();
-                }
+                mPresenter.onPlusButtonClick();
             }
         });
 
-        findViewById(R.id.activity_main_start_fragment_activity_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        findViewById(R.id.activity_main_start_fragment_activity_button).setOnClickListener(view -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onStartFragmentActivityButtonClicked();
-                }
+                mPresenter.onStartFragmentActivityButtonClicked();
             }
         });
 
-        findViewById(R.id.activity_main_start_dialog_fragment_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        findViewById(R.id.activity_main_start_dialog_fragment_button).setOnClickListener(view -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onShowDialogFragmentButtonClicked();
-                }
+                mPresenter.onShowDialogFragmentButtonClicked();
             }
         });
     }

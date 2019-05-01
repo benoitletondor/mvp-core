@@ -16,7 +16,6 @@
 
 package com.benoitletondor.mvp.core.fragment;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
@@ -35,15 +34,7 @@ public final class MVPFragment extends BaseMVPFragment<SpyPresenter<MVPFragment>
     @Override
     protected PresenterFactory<SpyPresenter<MVPFragment>> getPresenterFactory()
     {
-        return new PresenterFactory<SpyPresenter<MVPFragment>>()
-        {
-            @NonNull
-            @Override
-            public SpyPresenter<MVPFragment> create()
-            {
-                return new SpyPresenter<>();
-            }
-        };
+        return SpyPresenter::new;
     }
 
     @Nullable

@@ -94,7 +94,6 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         if( mPresenter == null )
         {
             mNeedToCallStart.set(true);
-            Log.d(TAG, "Start postponed, presenter not ready");
         }
         else
         {

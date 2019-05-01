@@ -55,31 +55,19 @@ public final class DialogFragmentContainerActivity extends AppCompatActivity
 
     public void addInstanceToBackstack()
     {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.addToBackStack(System.nanoTime()+"");
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.addToBackStack(System.nanoTime()+"");
 
-                final MVPDialogFragment dialogFragment = new MVPDialogFragment();
-                dialogFragment.show(transaction, TAG);
+            final MVPDialogFragment dialogFragment = new MVPDialogFragment();
+            dialogFragment.show(transaction, TAG);
 
-                getSupportFragmentManager().executePendingTransactions();
-            }
+            getSupportFragmentManager().executePendingTransactions();
         });
     }
 
     public void popBackStack()
     {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> getSupportFragmentManager().popBackStackImmediate());
     }
 }

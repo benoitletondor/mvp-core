@@ -14,7 +14,7 @@ It provides base classes for `Presenter` and different kind of views:
 - `Fragment`
 - `DialogFragment`
 
-The `Presenter` is instanciated and kept across configuration changes using a [`Loader`](https://developer.android.com/guide/components/loaders.html). 
+The `Presenter` is instantiated and kept across configuration changes using a [`Loader`](https://developer.android.com/guide/components/loaders.html).
 
 **The implementation follows the one of my [Android Studio MVP Template](https://github.com/benoitletondor/Android-Studio-MVP-template) and everything is explained in details in the README, so you should definitely check it.**
 
@@ -34,7 +34,7 @@ To use it, every `Presenter` of your app should extends `BasePresenterImpl` and 
 
 Every view should provide a `PresenterFactory` that will be called by the `Loader` to get a new instance of the presenter when needed.
 
-Here's an exemple of the implementation within an `Activity`:
+Here's an example of the implementation within an `Activity`:
 
 ```java
 public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView> 

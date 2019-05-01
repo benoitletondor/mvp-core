@@ -17,7 +17,10 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+
 import androidx.annotation.Nullable;
+import androidx.loader.content.Loader;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
@@ -47,7 +50,7 @@ public final class BaseMVPDialogFragmentTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
 
         // Verify presenter is not null after load finish
         assertNotNull(activity.getPresenter());
@@ -59,8 +62,8 @@ public final class BaseMVPDialogFragmentTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
-        activity.onLoadFinished(null, presenter);
-        activity.onLoaderReset(null);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
+        activity.onLoaderReset(new Loader(Mockito.mock(Context.class)));
 
         // Verify presenter is null after reset
         assertNull(activity.getPresenter());
@@ -72,7 +75,7 @@ public final class BaseMVPDialogFragmentTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
         activity.onStart();
 
         // Verify onViewAttached and onStart are called in right order
@@ -87,7 +90,7 @@ public final class BaseMVPDialogFragmentTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
         activity.onStart();
         activity.onStop();
 
@@ -104,7 +107,7 @@ public final class BaseMVPDialogFragmentTest
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
         activity.mNeedToCallStart.set(true);
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
 
         // Verify doStart is called on load finish when mNeedToCallStart is true
         Mockito.verify(activity).doStart();
@@ -117,7 +120,7 @@ public final class BaseMVPDialogFragmentTest
         final DialogFragmentTest activity = Mockito.spy(new DialogFragmentTest());
 
         activity.mNeedToCallStart.set(false);
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(Mockito.mock(Context.class)), presenter);
 
         // Verify doStart is not called on load finish when mNeedToCallStart is false
         Mockito.verify(activity, Mockito.never()).doStart();

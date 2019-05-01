@@ -73,7 +73,6 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
         if( mPresenter == null )
         {
             mNeedToCallStart.set(true);
-            Log.d(TAG, "Start postponed, presenter not ready");
         }
         else
         {

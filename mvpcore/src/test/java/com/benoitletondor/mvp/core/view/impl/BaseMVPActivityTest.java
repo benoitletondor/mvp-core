@@ -18,6 +18,7 @@ package com.benoitletondor.mvp.core.view.impl;
 
 import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
+import androidx.loader.content.Loader;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
@@ -47,7 +48,7 @@ public final class BaseMVPActivityTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(activity), presenter);
 
         // Verify presenter is not null after load finish
         assertNotNull(activity.getPresenter());
@@ -59,8 +60,8 @@ public final class BaseMVPActivityTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
-        activity.onLoadFinished(null, presenter);
-        activity.onLoaderReset(null);
+        activity.onLoadFinished(new Loader(activity), presenter);
+        activity.onLoaderReset(new Loader(activity));
 
         // Verify presenter is null after reset
         assertNull(activity.getPresenter());
@@ -72,7 +73,7 @@ public final class BaseMVPActivityTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(activity), presenter);
         activity.onStart();
 
         // Verify onViewAttached and onStart are called in right order
@@ -87,7 +88,7 @@ public final class BaseMVPActivityTest
         final Presenter presenter = Mockito.spy(Presenter.class);
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(activity), presenter);
         activity.onStart();
         activity.onStop();
 
@@ -104,7 +105,7 @@ public final class BaseMVPActivityTest
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
         activity.mNeedToCallStart.set(true);
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(activity), presenter);
 
         // Verify doStart is called on load finish when mNeedToCallStart is true
         Mockito.verify(activity).doStart();
@@ -117,7 +118,7 @@ public final class BaseMVPActivityTest
         final ActivityTest activity = Mockito.spy(new ActivityTest());
 
         activity.mNeedToCallStart.set(false);
-        activity.onLoadFinished(null, presenter);
+        activity.onLoadFinished(new Loader(activity), presenter);
 
         // Verify doStart is not called on load finish when mNeedToCallStart is false
         Mockito.verify(activity, Mockito.never()).doStart();

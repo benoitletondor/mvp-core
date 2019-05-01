@@ -16,7 +16,6 @@
 
 package com.benoitletondor.mvp.core.dialogfragment;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
@@ -35,15 +34,7 @@ public final class MVPDialogFragment extends BaseMVPDialogFragment<SpyPresenter<
     @Override
     protected PresenterFactory<SpyPresenter<MVPDialogFragment>> getPresenterFactory()
     {
-        return new PresenterFactory<SpyPresenter<MVPDialogFragment>>()
-        {
-            @NonNull
-            @Override
-            public SpyPresenter<MVPDialogFragment> create()
-            {
-                return new SpyPresenter<>();
-            }
-        };
+        return SpyPresenter::new;
     }
 
     @Nullable
