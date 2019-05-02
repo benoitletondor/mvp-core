@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.benoitletondor.mvp.core.presenter.impl;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
 import com.benoitletondor.mvp.core.view.View;
@@ -29,13 +30,23 @@ import com.benoitletondor.mvp.core.view.View;
  * @author Benoit LETONDOR
  */
 @SuppressWarnings("unused")
-public abstract class BasePresenterImpl<V extends View> implements Presenter<V>
+public abstract class BasePresenterImpl<V extends View> extends ViewModel implements Presenter<V>
 {
     /**
      * The view, will be null if the presenter isn't attached to a view
      */
     @Nullable
     protected V mView;
+
+// ------------------------------------------->
+
+    @Override
+    protected void onCleared()
+    {
+        onFinish();
+
+        super.onCleared();
+    }
 
 // ------------------------------------------->
 

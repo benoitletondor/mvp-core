@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,30 +17,21 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.fragment.app.DialogFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import android.util.Log;
 import android.view.View;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterLoader;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 @SuppressWarnings("unused")
-public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends com.benoitletondor.mvp.core.view.View> extends DialogFragment implements LoaderManager.LoaderCallbacks<P>
+public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends com.benoitletondor.mvp.core.view.View> extends DialogFragment
 {
-    private final static String TAG = BaseMVPFragment.class.getName();
-    private final static int LOADER_ID = 17051992;
-
     /**
      * The presenter for this view
      */
@@ -50,23 +41,17 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
      * Is this the first start of the fragment (after onCreate)
      */
     private boolean mFirstStart;
-    /**
-     * Do we need to call {@link #doStart()} from the {@link #onLoadFinished(Loader, P)} method.
-     * Will be true if presenter wasn't loaded when {@link #onStart()} is reached
-     */
-    @VisibleForTesting
-    final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
 
 // ------------------------------------------->
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         mFirstStart = true;
-
-        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
+        mPresenter = (P) ViewModelProviders.of(this, getPresenterFactory()).get(ViewModel.class);
     }
 
     @Override
@@ -91,11 +76,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     {
         super.onStart();
 
-        if( mPresenter == null )
-        {
-            mNeedToCallStart.set(true);
-        }
-        else
+        if( mPresenter != null )
         {
             doStart();
         }
@@ -120,26 +101,13 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         super.onDestroy();
     }
 
-    @Override
-    public void onDismiss(DialogInterface dialog)
-    {
-        // Force destroy manually cause it's not called by the framework, not sure why yet
-        if( getActivity() != null ) // If get activity == null, it's just a rotation
-        {
-            LoaderManager.getInstance(this).destroyLoader(LOADER_ID);
-        }
-
-        super.onDismiss(dialog);
-    }
-
 // ------------------------------------------->
 
     /**
      * Call the presenter callbacks for onStart
      */
     @SuppressWarnings("unchecked")
-    @VisibleForTesting
-    void doStart()
+    private void doStart()
     {
         assert mPresenter != null;
 
@@ -153,8 +121,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
     /**
      * Call the presenter callbacks for onStop
      */
-    @VisibleForTesting
-    void doStop()
+    private void doStop()
     {
         assert mPresenter != null;
 
@@ -163,34 +130,11 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         mPresenter.onViewDetached();
     }
 
-    @Override
-    public final Loader<P> onCreateLoader(int id, Bundle args)
-    {
-        return new PresenterLoader<>(getContext(), getPresenterFactory());
-    }
-
-    @Override
-    public final void onLoadFinished(@NonNull Loader<P> loader, P presenter)
-    {
-        mPresenter = presenter;
-
-        if( mNeedToCallStart.compareAndSet(true, false) )
-        {
-            doStart();
-            Log.d(TAG, "Postponed start called");
-        }
-    }
-
-    @Override
-    public final void onLoaderReset(@NonNull Loader<P> loader)
-    {
-        mPresenter = null;
-    }
-
     /**
      * Get the presenter factory implementation for this view
      *
      * @return the presenter factory
      */
-    protected abstract PresenterFactory<P> getPresenterFactory();
+    @NonNull
+    protected abstract ViewModelProvider.NewInstanceFactory getPresenterFactory();
 }

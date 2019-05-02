@@ -2,14 +2,11 @@ package com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentView;
@@ -17,6 +14,9 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -27,7 +27,7 @@ import dagger.android.support.AndroidSupportInjection;
 public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, SampleFragmentView> implements SampleFragmentView
 {
     @Inject
-    PresenterFactory<SampleFragmentPresenter> mPresenterFactory;
+    ViewModelProvider.NewInstanceFactory mPresenterFactory;
 
     private TextView mFizzBuzzTextView;
 
@@ -73,8 +73,9 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
         super.onDestroyView();
     }
 
+    @NonNull
     @Override
-    protected PresenterFactory<SampleFragmentPresenter> getPresenterFactory()
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
     {
         return mPresenterFactory;
     }

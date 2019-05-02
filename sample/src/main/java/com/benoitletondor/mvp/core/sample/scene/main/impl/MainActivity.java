@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.dialog.impl.DialogFragment;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.impl.FragmentActivity;
@@ -14,6 +13,8 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPActivity;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.android.AndroidInjection;
 
 /**
@@ -24,7 +25,7 @@ import dagger.android.AndroidInjection;
 public final class MainActivity extends BaseMVPActivity<MainPresenter, MainView> implements MainView
 {
     @Inject
-    PresenterFactory<MainPresenter> mPresenterFactory;
+    ViewModelProvider.NewInstanceFactory mPresenterFactory;
 
     private TextView mCounterTextView;
 
@@ -67,8 +68,9 @@ public final class MainActivity extends BaseMVPActivity<MainPresenter, MainView>
         });
     }
 
+    @NonNull
     @Override
-    protected PresenterFactory<MainPresenter> getPresenterFactory()
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
     {
         return mPresenterFactory;
     }

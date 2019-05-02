@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
 
 package com.benoitletondor.mvp.core.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.benoitletondor.mvp.core.SpyPresenter;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.view.View;
 import com.benoitletondor.mvp.core.view.impl.BaseMVPActivity;
 
@@ -31,16 +33,27 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPActivity;
  */
 public class MVPActivity extends BaseMVPActivity<SpyPresenter<MVPActivity>, MVPActivity> implements View
 {
-    @Override
-    protected PresenterFactory<SpyPresenter<MVPActivity>> getPresenterFactory()
-    {
-        return SpyPresenter::new;
-    }
-
     @Nullable
     @VisibleForTesting
     public SpyPresenter<MVPActivity> getPresenter()
     {
         return mPresenter;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    @NonNull
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    {
+        return new ViewModelProvider.NewInstanceFactory()
+        {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
+            {
+                return (T) new SpyPresenter();
+            }
+        };
+    }
+
 }

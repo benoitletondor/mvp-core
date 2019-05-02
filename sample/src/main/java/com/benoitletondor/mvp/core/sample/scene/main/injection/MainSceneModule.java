@@ -1,11 +1,10 @@
 package com.benoitletondor.mvp.core.sample.scene.main.injection;
 
-import androidx.annotation.NonNull;
-
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
-import com.benoitletondor.mvp.core.sample.scene.main.MainPresenter;
 import com.benoitletondor.mvp.core.sample.scene.main.impl.MainPresenterImpl;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,18 +17,20 @@ import dagger.Provides;
 public final class MainSceneModule
 {
     @Provides
-    PresenterFactory<MainPresenter> provideMainPresenterFactory()
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
     {
         return new MainPresenterImplFactory();
     }
 
-    private static final class MainPresenterImplFactory implements PresenterFactory<MainPresenter>
+    private static final class MainPresenterImplFactory extends ViewModelProvider.NewInstanceFactory
     {
         @NonNull
         @Override
-        public MainPresenter create()
+        @SuppressWarnings("unchecked")
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
         {
-            return new MainPresenterImpl();
+            return (T) new MainPresenterImpl();
         }
     }
+
 }

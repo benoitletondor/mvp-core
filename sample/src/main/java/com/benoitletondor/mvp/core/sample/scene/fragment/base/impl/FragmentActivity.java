@@ -3,7 +3,6 @@ package com.benoitletondor.mvp.core.sample.scene.fragment.base.impl;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.FragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.FragmentView;
@@ -12,6 +11,8 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPActivity;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.android.AndroidInjection;
 
 /**
@@ -22,7 +23,7 @@ import dagger.android.AndroidInjection;
 public final class FragmentActivity extends BaseMVPActivity<FragmentPresenter, FragmentView> implements FragmentView
 {
     @Inject
-    PresenterFactory<FragmentPresenter> mPresenterFactory;
+    ViewModelProvider.NewInstanceFactory mPresenterFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,8 +60,9 @@ public final class FragmentActivity extends BaseMVPActivity<FragmentPresenter, F
         return super.onOptionsItemSelected(item);
     }
 
+    @NonNull
     @Override
-    protected PresenterFactory<FragmentPresenter> getPresenterFactory()
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
     {
         return mPresenterFactory;
     }

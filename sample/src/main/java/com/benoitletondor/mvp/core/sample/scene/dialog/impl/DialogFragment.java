@@ -2,14 +2,10 @@ package com.benoitletondor.mvp.core.sample.scene.dialog.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogPresenter;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogView;
@@ -17,6 +13,9 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPDialogFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -27,7 +26,7 @@ import dagger.android.support.AndroidSupportInjection;
 public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter, DialogView> implements DialogView
 {
     @Inject
-    PresenterFactory<DialogPresenter> mPresenterFactory;
+    ViewModelProvider.NewInstanceFactory mPresenterFactory;
 
     public DialogFragment()
     {
@@ -62,8 +61,9 @@ public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter,
         });
     }
 
+    @NonNull
     @Override
-    protected PresenterFactory<DialogPresenter> getPresenterFactory()
+    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
     {
         return mPresenterFactory;
     }
