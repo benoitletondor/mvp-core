@@ -44,11 +44,11 @@ public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView>
 	PresenterFactory<MainViewPresenter> mPresenterFactory; // You can inject this (see sample about how to do it)
 
 	@Override
-    @NonNull
-    protected PresenterFactory<MainViewPresenter> getPresenterFactory()
-    {
-        return mPresenterFactory;
-    }
+	@NonNull
+	protected PresenterFactory<MainViewPresenter> getPresenterFactory()
+	{
+		return mPresenterFactory;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
