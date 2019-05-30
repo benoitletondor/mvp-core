@@ -9,3 +9,5 @@
 .externalNativeBuild
 .idea/kotlinc.xml
 .idea/vcs.xml
+.idea/caches
+.idea/codeStyles

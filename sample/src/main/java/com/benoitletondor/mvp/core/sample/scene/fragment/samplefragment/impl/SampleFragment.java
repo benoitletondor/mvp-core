@@ -2,14 +2,12 @@ package com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentView;
@@ -17,6 +15,8 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -45,27 +45,22 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         return inflater.inflate(R.layout.fragment_sample, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
-        mFizzBuzzTextView = (TextView) view.findViewById(R.id.fragment_sample_fizzbuzz_textview);
+        mFizzBuzzTextView = view.findViewById(R.id.fragment_sample_fizzbuzz_textview);
 
-        view.findViewById(R.id.fragment_sample_plus_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        view.findViewById(R.id.fragment_sample_plus_button).setOnClickListener(view1 -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onPlusButtonClicked();
-                }
+                mPresenter.onPlusButtonClicked();
             }
         });
     }
@@ -78,6 +73,7 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
         super.onDestroyView();
     }
 
+    @NonNull
     @Override
     protected PresenterFactory<SampleFragmentPresenter> getPresenterFactory()
     {

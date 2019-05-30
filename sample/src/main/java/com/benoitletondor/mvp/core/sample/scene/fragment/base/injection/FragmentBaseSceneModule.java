@@ -1,11 +1,10 @@
 package com.benoitletondor.mvp.core.sample.scene.fragment.base.injection;
 
-import android.support.annotation.NonNull;
-
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.FragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.impl.FragmentPresenterImpl;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,7 +17,7 @@ import dagger.Provides;
 public final class FragmentBaseSceneModule
 {
     @Provides
-    PresenterFactory<FragmentPresenter> provideFragmentPresenterFactory()
+    protected PresenterFactory<FragmentPresenter> getPresenterFactory()
     {
         return new FragmentPresenterImplFactory();
     }
@@ -32,4 +31,5 @@ public final class FragmentBaseSceneModule
             return new FragmentPresenterImpl();
         }
     }
+
 }

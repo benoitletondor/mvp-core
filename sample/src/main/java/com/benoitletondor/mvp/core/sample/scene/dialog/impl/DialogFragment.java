@@ -2,12 +2,11 @@ package com.benoitletondor.mvp.core.sample.scene.dialog.impl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogPresenter;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogView;
@@ -15,6 +14,8 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPDialogFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -48,23 +49,19 @@ public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.fragment_dialog_close_button).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        view.findViewById(R.id.fragment_dialog_close_button).setOnClickListener(view1 -> {
+            if( mPresenter != null )
             {
-                if( mPresenter != null )
-                {
-                    mPresenter.onCloseButtonClicked();
-                }
+                mPresenter.onCloseButtonClicked();
             }
         });
     }
 
+    @NonNull
     @Override
     protected PresenterFactory<DialogPresenter> getPresenterFactory()
     {

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@
 package com.benoitletondor.mvp.core.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.benoitletondor.mvp.core.test.R;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
 /**
  * An activity that is just a container for {@link MVPFragment}.
@@ -54,30 +53,18 @@ public final class FragmentContainerActivity extends AppCompatActivity
 
     public void addInstanceToBackstack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new MVPFragment())
-                    .addToBackStack(System.nanoTime()+"")
-                    .commit();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new MVPFragment())
+                .addToBackStack(System.nanoTime()+"")
+                .commit();
 
-                getSupportFragmentManager().executePendingTransactions();
-            }
+            getSupportFragmentManager().executePendingTransactions();
         });
     }
 
     public void popBackStack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> getSupportFragmentManager().popBackStackImmediate());
     }
 }

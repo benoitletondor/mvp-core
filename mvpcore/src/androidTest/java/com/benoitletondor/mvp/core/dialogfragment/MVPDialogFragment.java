@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package com.benoitletondor.mvp.core.dialogfragment;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-
 import com.benoitletondor.mvp.core.SpyPresenter;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.view.View;
 import com.benoitletondor.mvp.core.view.impl.BaseMVPDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * A simple DialogFragment that exposes its presenter that exposes its view.
@@ -33,17 +33,10 @@ import com.benoitletondor.mvp.core.view.impl.BaseMVPDialogFragment;
 public final class MVPDialogFragment extends BaseMVPDialogFragment<SpyPresenter<MVPDialogFragment>, MVPDialogFragment> implements View
 {
     @Override
+    @NonNull
     protected PresenterFactory<SpyPresenter<MVPDialogFragment>> getPresenterFactory()
     {
-        return new PresenterFactory<SpyPresenter<MVPDialogFragment>>()
-        {
-            @NonNull
-            @Override
-            public SpyPresenter<MVPDialogFragment> create()
-            {
-                return new SpyPresenter<>();
-            }
-        };
+        return SpyPresenter::new;
     }
 
     @Nullable

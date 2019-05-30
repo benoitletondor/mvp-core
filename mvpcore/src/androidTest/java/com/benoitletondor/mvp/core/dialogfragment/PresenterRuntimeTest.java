@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 
 package com.benoitletondor.mvp.core.dialogfragment;
 
-import android.support.test.runner.AndroidJUnit4;
-
-import com.benoitletondor.mvp.core.ActivityLifecycleTestRule;
+import com.benoitletondor.mvp.core.ActivityTestHelper;
 import com.benoitletondor.mvp.core.SpyPresenter;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,13 +38,15 @@ import static org.junit.Assert.assertNotNull;
 public class PresenterRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<DialogFragmentContainerActivity> mActivityRule
-        = new ActivityLifecycleTestRule<>(DialogFragmentContainerActivity.class);
+    public final ActivityScenarioRule<DialogFragmentContainerActivity> mActivityRule
+        = new ActivityScenarioRule<>(DialogFragmentContainerActivity.class);
 
     @Test
     public void testPresenterRuntime()
     {
-        final SpyPresenter<MVPDialogFragment> presenter = mActivityRule.getActivity().getFragment().getPresenter();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        final SpyPresenter<MVPDialogFragment> presenter = activity.getFragment().getPresenter();
         assertNotNull(presenter);
 
         // Test first launch
@@ -54,7 +57,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test stop
-        mActivityRule.simulateActivityStop();
+        ActivityTestHelper.simulateActivityStop(activity);
         assertEquals(1, presenter.mOnStartCounter);
         assertEquals(1, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -62,7 +65,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test restart
-        mActivityRule.simulateActivityStart();
+        ActivityTestHelper.simulateActivityStart(activity);
         assertEquals(2, presenter.mOnStartCounter);
         assertEquals(2, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -70,7 +73,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test added to backstack (doesn't trigger onStop)
-        mActivityRule.getActivity().addInstanceToBackstack();
+        activity.addInstanceToBackstack();
         assertEquals(2, presenter.mOnStartCounter);
         assertEquals(2, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -78,7 +81,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test back from backstack (doesn't trigger onStart)
-        mActivityRule.getActivity().popBackStack();
+        activity.popBackStack();
         assertEquals(2, presenter.mOnStartCounter);
         assertEquals(2, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -86,8 +89,8 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test recreate
-        mActivityRule.recreateCurrentActivity();
-        assertEquals(presenter, mActivityRule.getActivity().getFragment().getPresenter());
+        final DialogFragmentContainerActivity newActivity = ActivityTestHelper.getActivity(mActivityRule.getScenario().recreate());
+        assertEquals(presenter, newActivity.getFragment().getPresenter());
 
         assertEquals(3, presenter.mOnStartCounter);
         assertEquals(3, presenter.mViewAttachedCounter);
@@ -96,7 +99,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test finish
-        mActivityRule.finishCurrentActivity();
+        ActivityTestHelper.finishActivity(mActivityRule.getScenario());
         assertEquals(3, presenter.mOnStartCounter);
         assertEquals(3, presenter.mViewAttachedCounter);
         assertEquals(3, presenter.mOnStopCounter);

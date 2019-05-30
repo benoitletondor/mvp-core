@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,14 +17,13 @@
 package com.benoitletondor.mvp.core.dialogfragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.benoitletondor.mvp.core.test.R;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
 /**
  * An activity that is just a container for {@link MVPDialogFragment}.
@@ -56,31 +55,19 @@ public final class DialogFragmentContainerActivity extends AppCompatActivity
 
     public void addInstanceToBackstack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.addToBackStack(System.nanoTime()+"");
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.addToBackStack(System.nanoTime()+"");
 
-                final MVPDialogFragment dialogFragment = new MVPDialogFragment();
-                dialogFragment.show(transaction, TAG);
+            final MVPDialogFragment dialogFragment = new MVPDialogFragment();
+            dialogFragment.show(transaction, TAG);
 
-                getSupportFragmentManager().executePendingTransactions();
-            }
+            getSupportFragmentManager().executePendingTransactions();
         });
     }
 
     public void popBackStack()
     {
-        getInstrumentation().runOnMainSync(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> getSupportFragmentManager().popBackStackImmediate());
     }
 }

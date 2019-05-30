@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,17 +16,21 @@
 
 package com.benoitletondor.mvp.core.activity;
 
-import android.support.test.runner.AndroidJUnit4;
-
-import com.benoitletondor.mvp.core.ActivityLifecycleTestRule;
+import com.benoitletondor.mvp.core.ActivityTestHelper;
 import com.benoitletondor.mvp.core.SpyPresenter;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static org.junit.Assert.*;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Instrumentation test that tests the MVP runtime with an Activity.
@@ -37,44 +41,48 @@ import static org.junit.Assert.*;
 public final class ActivityRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
+    public final ActivityScenarioRule<MVPActivity> mActivityRule = new ActivityScenarioRule<>(MVPActivity.class);
 
     @Test
     public void testPresenterAndViewAreBindAfterStartingActivity()
     {
-        assertNotNull(mActivityRule.getActivity().getPresenter());
-        assertEquals(mActivityRule.getActivity(), mActivityRule.getActivity().getPresenter().getView());
+        final MVPActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        assertNotNull(activity.getPresenter());
+        assertEquals(activity, activity.getPresenter().getView());
     }
 
     @Test
     public void testViewIsReleasedAfterStoppingTheActivity()
     {
-        mActivityRule.simulateActivityStop();
+        final MVPActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
 
-        assertNotNull(mActivityRule.getActivity().getPresenter());
-        assertNull(mActivityRule.getActivity().getPresenter().getView());
+        ActivityTestHelper.simulateActivityStop(activity);
+
+        assertNotNull(activity.getPresenter());
+        assertNull(activity.getPresenter().getView());
     }
 
     @Test
-    public void testPresenterIsReleasedAfterFinishingTheActivity() throws Exception
+    public void testPresenterIsReleasedAfterFinishingTheActivity()
     {
-        final MVPActivity activity = mActivityRule.getActivity();
-        mActivityRule.finishCurrentActivity();
+        final MVPActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+        ActivityTestHelper.finishActivity(mActivityRule.getScenario());
 
         assertNull(activity.getPresenter());
     }
 
     @Test
-    public void testPresenterIsKeptOnRotation() throws Exception
+    public void testPresenterIsKeptOnRotation()
     {
-        final MVPActivity activity = mActivityRule.getActivity();
+        final MVPActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
         final SpyPresenter<MVPActivity> presenter = activity.getPresenter();
 
-        mActivityRule.recreateCurrentActivity();
+        final MVPActivity newActivity =  ActivityTestHelper.getActivity(mActivityRule.getScenario().recreate());
 
-        assertTrue(mActivityRule.getActivity() != activity);
+        assertNotSame(newActivity, activity);
 
-        assertNotNull(mActivityRule.getActivity().getPresenter());
-        assertTrue(mActivityRule.getActivity().getPresenter() == presenter);
+        assertNotNull(newActivity.getPresenter());
+        assertSame(newActivity.getPresenter(), presenter);
     }
 }

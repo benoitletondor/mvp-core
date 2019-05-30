@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 
 package com.benoitletondor.mvp.core.dialogfragment;
 
-import android.support.test.runner.AndroidJUnit4;
-
-import com.benoitletondor.mvp.core.ActivityLifecycleTestRule;
+import com.benoitletondor.mvp.core.ActivityTestHelper;
 import com.benoitletondor.mvp.core.SpyPresenter;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 /**
  * Instrumentation test that tests the MVP runtime with a Fragment.
@@ -39,78 +41,89 @@ import static org.junit.Assert.assertTrue;
 public final class DialogFragmentRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<DialogFragmentContainerActivity> mActivityRule
-        = new ActivityLifecycleTestRule<>(DialogFragmentContainerActivity.class);
+    public final ActivityScenarioRule<DialogFragmentContainerActivity> mActivityRule
+        = new ActivityScenarioRule<>(DialogFragmentContainerActivity.class);
 
     @Test
     public void testPresenterAndViewAreBindAfterStartingActivity()
     {
-        assertNotNull(mActivityRule.getActivity().getFragment().getPresenter());
-        assertEquals(mActivityRule.getActivity().getFragment(), mActivityRule.getActivity().getFragment().getPresenter().getView());
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        assertNotNull(activity.getFragment().getPresenter());
+        assertEquals(activity.getFragment(), activity.getFragment().getPresenter().getView());
     }
 
     @Test
     public void testViewIsReleasedAfterStoppingTheActivity()
     {
-        mActivityRule.simulateActivityStop();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+        ActivityTestHelper.simulateActivityStop(activity);
 
-        assertNotNull(mActivityRule.getActivity().getFragment().getPresenter());
-        assertNull(mActivityRule.getActivity().getFragment().getPresenter().getView());
+        assertNotNull(activity.getFragment().getPresenter());
+        assertNull(activity.getFragment().getPresenter().getView());
     }
 
     @Test
-    public void testPresenterIsReleasedAfterFinishingTheActivity() throws Exception
+    public void testPresenterIsReleasedAfterFinishingTheActivity()
     {
-        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
-        mActivityRule.finishCurrentActivity();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+        final MVPDialogFragment fragment = activity.getFragment();
+
+        ActivityTestHelper.finishActivity(mActivityRule.getScenario());
 
         assertNull(fragment.getPresenter());
     }
 
     @Test
-    public void testPresenterIsKeptOnRotation() throws Exception
+    public void testPresenterIsKeptOnRotation()
     {
-        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        final MVPDialogFragment fragment = activity.getFragment();
         final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
 
-        mActivityRule.recreateCurrentActivity();
+        final DialogFragmentContainerActivity newActivity = ActivityTestHelper.getActivity(mActivityRule.getScenario().recreate());
 
-        assertTrue(mActivityRule.getActivity().getFragment() != fragment);
+        assertNotSame(newActivity.getFragment(), fragment);
 
-        assertNotNull(mActivityRule.getActivity().getFragment().getPresenter());
-        assertTrue(mActivityRule.getActivity().getFragment().getPresenter() == presenter);
+        assertNotNull(newActivity.getFragment().getPresenter());
+        assertSame(newActivity.getFragment().getPresenter(), presenter);
     }
 
     @Test
     public void testViewIsReleasedWhenInBackstack()
     {
-        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        final MVPDialogFragment fragment = activity.getFragment();
         final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
         assertNotNull(presenter);
 
-        mActivityRule.getActivity().addInstanceToBackstack();
-        assertTrue(mActivityRule.getActivity().getFragment() != fragment);
+        activity.addInstanceToBackstack();
+        assertNotSame(activity.getFragment(), fragment);
 
         assertNotNull(presenter.getView()); // View isn't released when in backstack (onStop not called)
 
-        assertNotNull(mActivityRule.getActivity().getFragment().getPresenter());
-        assertTrue(mActivityRule.getActivity().getFragment().getPresenter() != presenter);
-        assertTrue(mActivityRule.getActivity().getFragment().getPresenter().getView() != fragment);
+        assertNotNull(activity.getFragment().getPresenter());
+        assertNotSame(activity.getFragment().getPresenter(), presenter);
+        assertNotSame(activity.getFragment().getPresenter().getView(), fragment);
     }
 
     @Test
     public void testPresenterIsKeptWhenPoppingBackstack()
     {
-        final MVPDialogFragment fragment = mActivityRule.getActivity().getFragment();
+        final DialogFragmentContainerActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+
+        final MVPDialogFragment fragment = activity.getFragment();
         final SpyPresenter<MVPDialogFragment> presenter = fragment.getPresenter();
         assertNotNull(presenter);
 
-        mActivityRule.getActivity().addInstanceToBackstack();
-        assertTrue(mActivityRule.getActivity().getFragment() != fragment);
+        activity.addInstanceToBackstack();
+        assertNotSame(activity.getFragment(), fragment);
 
-        mActivityRule.getActivity().popBackStack();
+        activity.popBackStack();
 
-        assertTrue(mActivityRule.getActivity().getFragment() == fragment);
-        assertTrue(mActivityRule.getActivity().getFragment().getPresenter() == presenter);
+        assertSame(activity.getFragment(), fragment);
+        assertSame(activity.getFragment().getPresenter(), presenter);
     }
 }

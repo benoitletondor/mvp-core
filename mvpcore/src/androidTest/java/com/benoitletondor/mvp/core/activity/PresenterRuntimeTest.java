@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 
 package com.benoitletondor.mvp.core.activity;
 
-import android.support.test.runner.AndroidJUnit4;
-
-import com.benoitletondor.mvp.core.ActivityLifecycleTestRule;
+import com.benoitletondor.mvp.core.ActivityTestHelper;
 import com.benoitletondor.mvp.core.SpyPresenter;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,12 +38,14 @@ import static org.junit.Assert.assertNotNull;
 public class PresenterRuntimeTest
 {
     @Rule
-    public final ActivityLifecycleTestRule<MVPActivity> mActivityRule = new ActivityLifecycleTestRule<>(MVPActivity.class);
+    public final ActivityScenarioRule<MVPActivity> mActivityRule = new ActivityScenarioRule<>(MVPActivity.class);
 
     @Test
     public void testPresenterRuntime()
     {
-        final SpyPresenter<MVPActivity> presenter = mActivityRule.getActivity().getPresenter();
+        final MVPActivity activity = ActivityTestHelper.getActivity(mActivityRule.getScenario());
+        final SpyPresenter<MVPActivity> presenter = activity.getPresenter();
+
         assertNotNull(presenter);
 
         // Test first launch
@@ -53,7 +56,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test stop
-        mActivityRule.simulateActivityStop();
+        ActivityTestHelper.simulateActivityStop(activity);
         assertEquals(1, presenter.mOnStartCounter);
         assertEquals(1, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -61,7 +64,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test restart
-        mActivityRule.simulateActivityStart();
+        ActivityTestHelper.simulateActivityStart(activity);
         assertEquals(2, presenter.mOnStartCounter);
         assertEquals(2, presenter.mViewAttachedCounter);
         assertEquals(1, presenter.mOnStopCounter);
@@ -69,8 +72,8 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test recreate
-        mActivityRule.recreateCurrentActivity();
-        assertEquals(presenter, mActivityRule.getActivity().getPresenter());
+        final MVPActivity newActivity = ActivityTestHelper.getActivity(mActivityRule.getScenario().recreate());
+        assertEquals(presenter, newActivity.getPresenter());
 
         assertEquals(3, presenter.mOnStartCounter);
         assertEquals(3, presenter.mViewAttachedCounter);
@@ -79,7 +82,7 @@ public class PresenterRuntimeTest
         assertEquals(0, presenter.mOnFinishCounter);
 
         // Test finish
-        mActivityRule.finishCurrentActivity();
+        ActivityTestHelper.finishActivity(mActivityRule.getScenario());
         assertEquals(3, presenter.mOnStartCounter);
         assertEquals(3, presenter.mViewAttachedCounter);
         assertEquals(3, presenter.mOnStopCounter);

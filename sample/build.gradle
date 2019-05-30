@@ -1,17 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.benoitletondor.mvp.core.sample"
         minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 28
+        versionCode 2
+        versionName "2.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -19,16 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':mvpcore')
 
-    compile project(':mvpcore')
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-
-    compile 'com.google.dagger:dagger-android-support:2.11-rc2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11-rc2'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11-rc2'
+    implementation 'com.google.dagger:dagger-android-support:2.22.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.22.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.22.1'
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,42 +17,29 @@
 package com.benoitletondor.mvp.core.view.impl;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
-import com.benoitletondor.mvp.core.presenter.loader.PresenterLoader;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 @SuppressWarnings("unused")
-public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.benoitletondor.mvp.core.view.View> extends Fragment implements LoaderManager.LoaderCallbacks<P>
+public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.benoitletondor.mvp.core.view.View> extends Fragment
 {
-    private final static String TAG = BaseMVPFragment.class.getName();
-    private final static int LOADER_ID = 10011990;
-
     /**
      * The presenter for this view
      */
-    @SuppressWarnings("WeakerAccess")
     @Nullable
     protected P mPresenter;
     /**
      * Is this the first start of the fragment (after onCreate)
      */
     private boolean mFirstStart;
-    /**
-     * Do we need to call {@link #doStart()} from the {@link #onLoadFinished(Loader, P)} method.
-     * Will be true if presenter wasn't loaded when {@link #onStart()} is reached
-     */
-    @VisibleForTesting
-    final AtomicBoolean mNeedToCallStart = new AtomicBoolean(false);
 
 // ------------------------------------------->
 
@@ -65,15 +52,16 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        mPresenter = (P) ViewModelProviders.of(this, new PresenterFactoryWrapper(getPresenterFactory())).get(ViewModel.class);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         // When used in backstack, the fragment will not be destroyed, only its view.
         mFirstStart = true;
@@ -86,12 +74,7 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     {
         super.onStart();
 
-        if( mPresenter == null )
-        {
-            mNeedToCallStart.set(true);
-            Log.d(TAG, "Start postponed, presenter not ready");
-        }
-        else
+        if( mPresenter != null )
         {
             doStart();
         }
@@ -108,14 +91,21 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
         super.onStop();
     }
 
+    @Override
+    public void onDestroy()
+    {
+        mPresenter = null;
+
+        super.onDestroy();
+    }
+
 // ------------------------------------------->
 
     /**
      * Call the presenter callbacks for onStart
      */
     @SuppressWarnings("unchecked")
-    @VisibleForTesting
-    void doStart()
+    private void doStart()
     {
         assert mPresenter != null;
 
@@ -129,8 +119,7 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
     /**
      * Call the presenter callbacks for onStop
      */
-    @VisibleForTesting
-    void doStop()
+    private void doStop()
     {
         assert mPresenter != null;
 
@@ -139,34 +128,11 @@ public abstract class BaseMVPFragment<P extends Presenter<V>, V extends com.beno
         mPresenter.onViewDetached();
     }
 
-    @Override
-    public final Loader<P> onCreateLoader(int id, Bundle args)
-    {
-        return new PresenterLoader<>(getContext(), getPresenterFactory());
-    }
-
-    @Override
-    public final void onLoadFinished(Loader<P> loader, P presenter)
-    {
-        mPresenter = presenter;
-
-        if( mNeedToCallStart.compareAndSet(true, false) )
-        {
-            doStart();
-            Log.d(TAG, "Postponed start called");
-        }
-    }
-
-    @Override
-    public final void onLoaderReset(Loader<P> loader)
-    {
-        mPresenter = null;
-    }
-
     /**
      * Get the presenter factory implementation for this view
      *
      * @return the presenter factory
      */
+    @NonNull
     protected abstract PresenterFactory<P> getPresenterFactory();
 }

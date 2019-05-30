@@ -1,11 +1,10 @@
 package com.benoitletondor.mvp.core.sample.scene.dialog.injection;
 
-import android.support.annotation.NonNull;
-
-import com.benoitletondor.mvp.core.presenter.loader.PresenterFactory;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogPresenter;
 import com.benoitletondor.mvp.core.sample.scene.dialog.impl.DialogPresenterImpl;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,7 +17,7 @@ import dagger.Provides;
 public final class DialogSceneModule
 {
     @Provides
-    PresenterFactory<DialogPresenter> provideDialogPresenterFactory()
+    protected PresenterFactory<DialogPresenter> getPresenterFactory()
     {
         return new DialogPresenterImplFactory();
     }

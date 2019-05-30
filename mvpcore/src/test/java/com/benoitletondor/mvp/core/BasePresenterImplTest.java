@@ -1,5 +1,5 @@
 /*
- *   Copyright 2017 Benoit LETONDOR
+ *   Copyright 2019 Benoit LETONDOR
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 
 package com.benoitletondor.mvp.core;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.benoitletondor.mvp.core.presenter.impl.BasePresenterImpl;
 import com.benoitletondor.mvp.core.view.View;
@@ -38,7 +39,7 @@ import static org.junit.Assert.*;
 public final class BasePresenterImplTest
 {
     @Test
-    public void testViewIsNotNullAfterAttached() throws Exception
+    public void testViewIsNotNullAfterAttached()
     {
         final PresenterTest presenter = new PresenterTest();
         final View view = Mockito.mock(View.class);
@@ -52,7 +53,7 @@ public final class BasePresenterImplTest
     }
 
     @Test
-    public void testViewIsNullAfterDetached() throws Exception
+    public void testViewIsNullAfterDetached()
     {
         final PresenterTest presenter = new PresenterTest();
         final View view = Mockito.mock(View.class);
@@ -64,14 +65,41 @@ public final class BasePresenterImplTest
         assertNull(presenter.getView());
     }
 
+    @Test
+    public void testOnFinishIsCalledWhenViewModelOnClearedIsCalled() {
+        final PresenterTest presenter = new PresenterTest();
+
+        presenter.onCleared();
+
+        // Ensure on finish is called correctly
+        assertTrue(presenter.mOnFinishCalled);
+    }
+
 // ----------------------------------->
 
     public static class PresenterTest extends BasePresenterImpl
     {
+        private boolean mOnFinishCalled = false;
+
+        @Override
+        @VisibleForTesting
+        public void onCleared()
+        {
+            super.onCleared();
+        }
+
         @Nullable
         private View getView()
         {
             return mView;
+        }
+
+        @Override
+        public void onFinish()
+        {
+            mOnFinishCalled = true;
+
+            super.onFinish();
         }
     }
 }

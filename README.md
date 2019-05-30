@@ -14,38 +14,41 @@ It provides base classes for `Presenter` and different kind of views:
 - `Fragment`
 - `DialogFragment`
 
-The `Presenter` is instanciated and kept across configuration changes using a [`Loader`](https://developer.android.com/guide/components/loaders.html). 
+The `Presenter` is instantiated and kept across configuration changes using a [`Loader`](https://developer.android.com/guide/components/loaders.html).
 
 **The implementation follows the one of my [Android Studio MVP Template](https://github.com/benoitletondor/Android-Studio-MVP-template) and everything is explained in details in the README, so you should definitely check it.**
 
 ## Dependencies
 
-This library provides implementation for views that use the [appcompat-v7 support library](https://developer.android.com/topic/libraries/support-library/features.html), so it has a strong dependency on it. 
+This library provides implementation for views that use the [androidx appcompat](https://developer.android.com/jetpack/androidx/releases/appcompat), so it has a strong dependency on it. 
+
+Presenter implementation is also based on [ViewModel](https://developer.android.com/reference/androidx/lifecycle/ViewModel.html), it also has a strong dependency on it.
 
 ## How to use
 
 **Add this line to your gradle file:**
 
 ```
-compile 'com.benoitletondor:mvp-core:1.0'
+implementation 'com.benoitletondor:mvp-core:2.0'
 ```
 
 To use it, every `Presenter` of your app should extends `BasePresenterImpl` and every view should extend either `BaseMVPActivity`, `BaseMVPFragment` or `BaseMVPDialogFragment`.
 
-Every view should provide a `PresenterFactory` that will be called by the `Loader` to get a new instance of the presenter when needed.
+Every view should provide a `ViewModelProvider.NewInstanceFactory` that will be called to get a new instance of the presenter when needed.
 
-Here's an exemple of the implementation within an `Activity`:
+Here's an example of the implementation within an `Activity`:
 
 ```java
 public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView> 
 {
-	PresenterFactory<MainViewPresenter> mPresenterFactory; // You can inject this
+	PresenterFactory<MainViewPresenter> mPresenterFactory; // You can inject this (see sample about how to do it)
 
 	@Override
-	protected PresenterFactory<MainViewPresenter> getPresenterFactory()
-	{
-		return mPresenterFactory;
-	}
+    @NonNull
+    protected PresenterFactory<MainViewPresenter> getPresenterFactory()
+    {
+        return mPresenterFactory;
+    }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView>
 		setContentView(R.layout.activity_main);
 		
 		// You can bind UI events to the presenter (but beware, presenter is still null at this point)
-		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() 
+		findViewById(R.id.button).setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v) 
 			{
@@ -120,7 +123,7 @@ This sample app also shows how to use [Dagger 2](https://github.com/google/dagge
 
 ## License
 
-    Copyright 2017 Benoit LETONDOR
+    Copyright 2019 Benoit LETONDOR
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

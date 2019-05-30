@@ -1,6 +1,6 @@
 package com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.benoitletondor.mvp.core.view.View;
 

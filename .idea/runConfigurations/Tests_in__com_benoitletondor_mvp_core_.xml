@@ -1,13 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tests in 'com.benoitletondor.mvp.core'" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" nameIsGenerated="true">
+  <configuration default="false" name="Tests in 'com.benoitletondor.mvp.core'" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
     <module name="mvpcore" />
-    <option name="TESTING_TYPE" value="1" />
-    <option name="INSTRUMENTATION_RUNNER_CLASS" value="android.support.test.runner.AndroidJUnitRunner" />
+    <option name="TESTING_TYPE" value="0" />
+    <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="CLASS_NAME" value="" />
-    <option name="PACKAGE_NAME" value="com.benoitletondor.mvp.core" />
+    <option name="PACKAGE_NAME" value="" />
     <option name="EXTRA_OPTIONS" value="" />
-    <option name="PREFERRED_AVD" value="" />
     <option name="CLEAR_LOGCAT" value="false" />
     <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
     <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
@@ -41,10 +40,13 @@
       <option name="SHOW_OPTIMIZED_WARNING" value="true" />
     </Native>
     <Profilers>
-      <option name="ENABLE_ADVANCED_PROFILING" value="false" />
-      <option name="SUPPORT_LIB_ENABLED" value="true" />
-      <option name="INSTRUMENTATION_ENABLED" value="true" />
+      <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
     </Profilers>
-    <method />
+    <method v="2">
+      <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521132417221" />
+    </method>
   </configuration>
 </component>
