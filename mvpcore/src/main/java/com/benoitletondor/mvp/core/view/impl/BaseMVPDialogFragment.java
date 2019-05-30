@@ -21,12 +21,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 @SuppressWarnings("unused")
@@ -51,7 +51,7 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
         super.onCreate(savedInstanceState);
 
         mFirstStart = true;
-        mPresenter = (P) ViewModelProviders.of(this, getPresenterFactory()).get(ViewModel.class);
+        mPresenter = (P) ViewModelProviders.of(this, new PresenterFactoryWrapper(getPresenterFactory())).get(ViewModel.class);
     }
 
     @Override
@@ -136,5 +136,5 @@ public abstract class BaseMVPDialogFragment<P extends Presenter<V>, V extends co
      * @return the presenter factory
      */
     @NonNull
-    protected abstract ViewModelProvider.NewInstanceFactory getPresenterFactory();
+    protected abstract PresenterFactory<P> getPresenterFactory();
 }

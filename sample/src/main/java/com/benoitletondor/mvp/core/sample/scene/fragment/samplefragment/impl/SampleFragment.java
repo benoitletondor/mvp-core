@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.samplefragment.SampleFragmentView;
@@ -16,7 +17,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -27,7 +27,7 @@ import dagger.android.support.AndroidSupportInjection;
 public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, SampleFragmentView> implements SampleFragmentView
 {
     @Inject
-    ViewModelProvider.NewInstanceFactory mPresenterFactory;
+    PresenterFactory<SampleFragmentPresenter> mPresenterFactory;
 
     private TextView mFizzBuzzTextView;
 
@@ -75,7 +75,7 @@ public class SampleFragment extends BaseMVPFragment<SampleFragmentPresenter, Sam
 
     @NonNull
     @Override
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<SampleFragmentPresenter> getPresenterFactory()
     {
         return mPresenterFactory;
     }

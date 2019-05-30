@@ -17,14 +17,13 @@
 package com.benoitletondor.mvp.core.fragment;
 
 import com.benoitletondor.mvp.core.SpyPresenter;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.view.View;
 import com.benoitletondor.mvp.core.view.impl.BaseMVPFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 /**
  * A simple fragment that exposes its presenter that exposes its view.
@@ -34,19 +33,10 @@ import androidx.lifecycle.ViewModelProvider;
 public final class MVPFragment extends BaseMVPFragment<SpyPresenter<MVPFragment>, MVPFragment> implements View
 {
     @Override
-    @SuppressWarnings("unchecked")
     @NonNull
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<SpyPresenter<MVPFragment>> getPresenterFactory()
     {
-        return new ViewModelProvider.NewInstanceFactory()
-        {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
-            {
-                return (T) new SpyPresenter();
-            }
-        };
+        return SpyPresenter::new;
     }
 
     @Nullable

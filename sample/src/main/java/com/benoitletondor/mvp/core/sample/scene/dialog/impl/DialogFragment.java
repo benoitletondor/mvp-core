@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.sample.R;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogPresenter;
 import com.benoitletondor.mvp.core.sample.scene.dialog.DialogView;
@@ -15,7 +16,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -26,7 +26,7 @@ import dagger.android.support.AndroidSupportInjection;
 public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter, DialogView> implements DialogView
 {
     @Inject
-    ViewModelProvider.NewInstanceFactory mPresenterFactory;
+    PresenterFactory<DialogPresenter> mPresenterFactory;
 
     public DialogFragment()
     {
@@ -63,7 +63,7 @@ public final class DialogFragment extends BaseMVPDialogFragment<DialogPresenter,
 
     @NonNull
     @Override
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<DialogPresenter> getPresenterFactory()
     {
         return mPresenterFactory;
     }

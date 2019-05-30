@@ -41,11 +41,11 @@ Here's an example of the implementation within an `Activity`:
 ```java
 public class MainActivity extends BaseMVPActivity<MainViewPresenter, MainView> 
 {
-	ViewModelProvider.NewInstanceFactory mPresenterFactory; // You can inject this (see sample about how to do it)
+	PresenterFactory<MainViewPresenter> mPresenterFactory; // You can inject this (see sample about how to do it)
 
 	@Override
     @NonNull
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<MainViewPresenter> getPresenterFactory()
     {
         return mPresenterFactory;
     }

@@ -19,13 +19,13 @@ package com.benoitletondor.mvp.core.view.impl;
 import android.os.Bundle;
 
 import com.benoitletondor.mvp.core.presenter.Presenter;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> extends AppCompatActivity
@@ -49,7 +49,7 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
         super.onCreate(savedInstanceState);
 
         mFirstStart = true;
-        mPresenter = (P) ViewModelProviders.of(this, getPresenterFactory()).get(ViewModel.class);
+        mPresenter = (P) ViewModelProviders.of(this, new PresenterFactoryWrapper(getPresenterFactory())).get(ViewModel.class);
     }
 
     @Override
@@ -117,5 +117,5 @@ public abstract class BaseMVPActivity<P extends Presenter<V>, V extends View> ex
      * @return the presenter factory
      */
     @NonNull
-    protected abstract ViewModelProvider.NewInstanceFactory getPresenterFactory();
+    protected abstract PresenterFactory<P> getPresenterFactory();
 }

@@ -19,10 +19,9 @@ package com.benoitletondor.mvp.core.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.benoitletondor.mvp.core.SpyPresenter;
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
 import com.benoitletondor.mvp.core.view.View;
 import com.benoitletondor.mvp.core.view.impl.BaseMVPActivity;
 
@@ -41,19 +40,9 @@ public class MVPActivity extends BaseMVPActivity<SpyPresenter<MVPActivity>, MVPA
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     @NonNull
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<SpyPresenter<MVPActivity>> getPresenterFactory()
     {
-        return new ViewModelProvider.NewInstanceFactory()
-        {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
-            {
-                return (T) new SpyPresenter();
-            }
-        };
+        return SpyPresenter::new;
     }
-
 }

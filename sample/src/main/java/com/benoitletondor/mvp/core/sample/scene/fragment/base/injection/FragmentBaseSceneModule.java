@@ -1,10 +1,10 @@
 package com.benoitletondor.mvp.core.sample.scene.fragment.base.injection;
 
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
+import com.benoitletondor.mvp.core.sample.scene.fragment.base.FragmentPresenter;
 import com.benoitletondor.mvp.core.sample.scene.fragment.base.impl.FragmentPresenterImpl;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,19 +17,18 @@ import dagger.Provides;
 public final class FragmentBaseSceneModule
 {
     @Provides
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<FragmentPresenter> getPresenterFactory()
     {
         return new FragmentPresenterImplFactory();
     }
 
-    private static final class FragmentPresenterImplFactory extends ViewModelProvider.NewInstanceFactory
+    private static final class FragmentPresenterImplFactory implements PresenterFactory<FragmentPresenter>
     {
         @NonNull
         @Override
-        @SuppressWarnings("unchecked")
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
+        public FragmentPresenter create()
         {
-            return (T) new FragmentPresenterImpl();
+            return new FragmentPresenterImpl();
         }
     }
 

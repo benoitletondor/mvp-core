@@ -1,10 +1,10 @@
 package com.benoitletondor.mvp.core.sample.scene.dialog.injection;
 
+import com.benoitletondor.mvp.core.presenter.PresenterFactory;
+import com.benoitletondor.mvp.core.sample.scene.dialog.DialogPresenter;
 import com.benoitletondor.mvp.core.sample.scene.dialog.impl.DialogPresenterImpl;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,19 +17,18 @@ import dagger.Provides;
 public final class DialogSceneModule
 {
     @Provides
-    protected ViewModelProvider.NewInstanceFactory getPresenterFactory()
+    protected PresenterFactory<DialogPresenter> getPresenterFactory()
     {
         return new DialogPresenterImplFactory();
     }
 
-    private static final class DialogPresenterImplFactory extends ViewModelProvider.NewInstanceFactory
+    private static final class DialogPresenterImplFactory implements PresenterFactory<DialogPresenter>
     {
         @NonNull
         @Override
-        @SuppressWarnings("unchecked")
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
+        public DialogPresenter create()
         {
-            return (T) new DialogPresenterImpl();
+            return new DialogPresenterImpl();
         }
     }
 }
